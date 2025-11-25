@@ -2,14 +2,15 @@
 // swiftlint:disable all
 // swiftformat:disable all
 
-public struct BytesCount: NativeStruct, FlatbuffersVectorInitializable, Verifiable, FlatbuffersInitializable, NativeObject {
+public struct BytesCount: NativeStruct, Verifiable, FlatbuffersInitializable, NativeObject {
 
   static func validateVersion() { FlatBuffersVersion_25_9_23() }
 
   private var _x: Int64
 
   public init(_ bb: ByteBuffer, o: Int32) {
-    self = bb.read(def: Self.self, position: Int(o))
+    let _accessor = Struct(bb: bb, position: o)
+    _x = _accessor.readBuffer(of: Int64.self, at: 0)
   }
 
   public init(x: Int64) {
@@ -20,7 +21,7 @@ public struct BytesCount: NativeStruct, FlatbuffersVectorInitializable, Verifiab
     _x = 0
   }
 
-  public init(_ _t: borrowing BytesCount_Mutable) {
+  public init(_ _t: inout BytesCount_Mutable) {
     _x = _t.x
   }
 
@@ -44,7 +45,7 @@ extension BytesCount: Encodable {
   }
 }
 
-public struct BytesCount_Mutable: FlatBufferStruct, FlatbuffersVectorInitializable {
+public struct BytesCount_Mutable: FlatBufferObject {
 
   static func validateVersion() { FlatBuffersVersion_25_9_23() }
   public var __buffer: ByteBuffer! { return _accessor.bb }
@@ -54,9 +55,10 @@ public struct BytesCount_Mutable: FlatBufferStruct, FlatbuffersVectorInitializab
 
   public var x: Int64 { return _accessor.readBuffer(of: Int64.self, at: 0) }
   @discardableResult public func mutate(x: Int64) -> Bool { return _accessor.mutate(x, index: 0) }
+  
 
-  public func unpack() -> BytesCount {
-    return BytesCount(self)
+  public mutating func unpack() -> BytesCount {
+    return BytesCount(&self)
   }
   public static func pack(_ builder: inout FlatBufferBuilder, obj: inout BytesCount?) -> Offset {
     guard var obj = obj else { return Offset() }
@@ -68,7 +70,7 @@ public struct BytesCount_Mutable: FlatBufferStruct, FlatbuffersVectorInitializab
   }
 }
 
-public struct InternalMessage: FlatBufferTable, FlatbuffersVectorInitializable, Verifiable, ObjectAPIPacker {
+public struct InternalMessage: FlatBufferObject, Verifiable, ObjectAPIPacker {
 
   static func validateVersion() { FlatBuffersVersion_25_9_23() }
   public var __buffer: ByteBuffer! { return _accessor.bb }
@@ -96,9 +98,10 @@ public struct InternalMessage: FlatBufferTable, FlatbuffersVectorInitializable, 
     InternalMessage.add(str: str, &fbb)
     return InternalMessage.endInternalMessage(&fbb, start: __start)
   }
+  
 
-  public func unpack() -> InternalMessageT {
-    return InternalMessageT(self)
+  public mutating func unpack() -> InternalMessageT {
+    return InternalMessageT(&self)
   }
   public static func pack(_ builder: inout FlatBufferBuilder, obj: inout InternalMessageT?) -> Offset {
     guard var obj = obj else { return Offset() }
@@ -140,7 +143,7 @@ public class InternalMessageT: NativeObject {
 
   public var str: String?
 
-  public init(_ _t: borrowing InternalMessage) {
+  public init(_ _t: inout InternalMessage) {
     str = _t.str
   }
 
@@ -150,7 +153,7 @@ public class InternalMessageT: NativeObject {
   public func serialize() -> ByteBuffer { return serialize(type: InternalMessage.self) }
 
 }
-public struct Message: FlatBufferTable, FlatbuffersVectorInitializable, Verifiable, ObjectAPIPacker {
+public struct Message: FlatBufferObject, Verifiable, ObjectAPIPacker {
 
   static func validateVersion() { FlatBuffersVersion_25_9_23() }
   public var __buffer: ByteBuffer! { return _accessor.bb }
@@ -189,9 +192,10 @@ public struct Message: FlatBufferTable, FlatbuffersVectorInitializable, Verifiab
     Message.add(pointer: pointer, &fbb)
     return Message.endMessage(&fbb, start: __start)
   }
+  
 
-  public func unpack() -> MessageT {
-    return MessageT(self)
+  public mutating func unpack() -> MessageT {
+    return MessageT(&self)
   }
   public static func pack(_ builder: inout FlatBufferBuilder, obj: inout MessageT?) -> Offset {
     guard var obj = obj else { return Offset() }
@@ -239,10 +243,11 @@ public class MessageT: NativeObject {
   public var position: BytesCount
   public var pointer: InternalMessageT
 
-  public init(_ _t: borrowing Message) {
+  public init(_ _t: inout Message) {
     id = _t.id
     position = _t.position
-    pointer = _t.pointer!.unpack()
+    var __pointer = _t.pointer
+    pointer = __pointer!.unpack()
   }
 
   public init() {

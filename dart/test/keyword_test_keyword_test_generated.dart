@@ -7,7 +7,6 @@ import 'dart:typed_data' show Uint8List;
 import 'package:flat_buffers/flat_buffers.dart' as fb;
 
 
-
 enum Abc {
   $void(0),
   where(1),
@@ -277,7 +276,7 @@ class Table2 {
 
   Table2T unpack() => Table2T(
       typeType: typeType,
-      type: type?.unpack());
+      type: type);
 
   static int pack(fb.Builder fbBuilder, Table2T? object) {
     if (object == null) return 0;

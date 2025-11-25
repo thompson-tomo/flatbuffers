@@ -69,6 +69,7 @@ CS_OPTS = ["--csharp", "--cs-gen-json-serializer"]
 CPP_OPTS = [
     "--cpp",
     "--gen-compare",
+    "--gen-absl-hash",
 ] + (["--cpp-std", "c++0x"] if args.cpp_0x else [])
 
 CPP_17_OPTS = NO_INCL_OPTS + [
@@ -355,7 +356,7 @@ flatc(
 )
 
 flatc(
-    ["--cpp", "--gen-compare", "--gen-mutable", "--gen-object-api", "--reflect-names"],
+    ["--cpp", "--gen-mutable", "--gen-object-api", "--reflect-names"],
     schema="native_type_test.fbs",
 )
 
@@ -393,6 +394,10 @@ flatc(
     schema="nested_union_test.fbs",
 )
 
+flatc(
+    NO_INCL_OPTS + CPP_OPTS,
+    schema="default_vectors_strings_test.fbs",
+)
 
 # Optional Scalars
 optional_scalars_schema = "optional_scalars.fbs"
@@ -451,13 +456,6 @@ flatc(
     include="include_test",
     prefix=swift_prefix,
 )
-
-flatc(
-    SWIFT_OPTS + BASE_OPTS,
-    schema="arrays_test.fbs",
-    prefix=swift_prefix,
-)
-
 flatc(
     SWIFT_OPTS + BASE_OPTS,
     schema="union_vector/union_vector.fbs",
